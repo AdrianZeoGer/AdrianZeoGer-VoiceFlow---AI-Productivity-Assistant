@@ -1,0 +1,26 @@
+[package]
+name = "voice-prod-tool"
+version = "0.1.0"
+description = "Voice-driven desktop productivity: record, transcribe, and enrich with AI"
+authors = ["you"]
+edition = "2021"
+rust-version = "1.71"
+
+[lib]
+name = "voice_prod_tool_lib"
+crate-type = ["lib", "cdylib", "staticlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+
+[target.'cfg(any(target_os = "macos", windows, target_os = "linux"))'.dependencies]
+tauri-plugin-global-shortcut = { version = "2" }
+arboard = "3.6.1"
+enigo = "0.6.1"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]

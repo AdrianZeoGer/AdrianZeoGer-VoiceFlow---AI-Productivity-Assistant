@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.tauri.app/config/2.0",
+  "productName": "Voice Prod",
+  "version": "0.1.0",
+  "identifier": "com.voiceprod.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:3000",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../out"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Voice Prod",
+        "label": "main",
+        "width": 880,
+        "height": 640,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/icon.ico",
+      "icons/icon.png" 
+    ],
+    "resources": [],
+    "externalBin": [],
+    "copyright": "",
+    "category": "Productivity",
+    "shortDescription": "Voice-driven productivity: record, transcribe, enrich with AI",
+    "longDescription": "Record audio, transcribe with Whisper, and format with AI (summaries, to-dos)."
+  },
+  "plugins": {}
+}
