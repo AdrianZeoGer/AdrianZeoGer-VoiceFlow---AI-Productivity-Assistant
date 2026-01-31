@@ -31,7 +31,7 @@ Die App liest (auf Wunsch) deine Zwischenablage.
 
 ---
 
-## 🛠 Tech Stack ("The Winning Stack")
+## 🛠 Tech Stack 
 
 VoiceFlow setzt auf maximale Performance bei minimalem Ressourcenverbrauch:
 
