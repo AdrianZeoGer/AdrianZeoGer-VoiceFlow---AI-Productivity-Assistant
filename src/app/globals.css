@@ -4,6 +4,28 @@
 
 @layer base {
   :root {
+    /* Light theme (default) */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --primary: 222 47% 11%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 20% 40%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 222 47% 11%;
+  }
+
+  .dark {
+    /* Dark theme */
     --background: 222 47% 11%;
     --foreground: 210 40% 98%;
     --card: 222 47% 14%;
@@ -21,6 +43,27 @@
     --border: 217 33% 22%;
     --input: 217 33% 22%;
     --ring: 0 84% 60%;
+  }
+
+  .colorful {
+    /* Colorful theme: still readable, but more vibrant accents */
+    --background: 230 35% 8%;
+    --foreground: 210 40% 98%;
+    --card: 230 35% 10%;
+    --card-foreground: 210 40% 98%;
+    --primary: 271 91% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 230 25% 18%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 230 25% 18%;
+    --muted-foreground: 215 20% 70%;
+    --accent: 230 25% 18%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 230 22% 22%;
+    --input: 230 22% 22%;
+    --ring: 271 91% 65%;
   }
 }
 
@@ -88,4 +131,23 @@
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+/* --- Colorful theme extras (gradient + glass) --- */
+html.colorful body {
+  background:
+    radial-gradient(900px circle at 10% 10%, rgba(168, 85, 247, 0.35), transparent 55%),
+    radial-gradient(900px circle at 90% 20%, rgba(59, 130, 246, 0.28), transparent 55%),
+    radial-gradient(900px circle at 60% 90%, rgba(20, 184, 166, 0.18), transparent 55%),
+    hsl(var(--background));
+  background-attachment: fixed;
+}
+
+html.colorful .vp-card {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  backdrop-filter: blur(14px);
 }

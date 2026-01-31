@@ -1,174 +1,91 @@
-# VoiceFlow — AI Productivity Assistant (Tauri + Groq)
+# VoiceFlow — Der intelligente Desktop-Assistent
 
-**The hook:** Turn voice into polished, context-aware output and paste it directly where you work — saving hours of typing, rewriting, and follow-up.
+**Das Problem:** Ob Bachelorarbeit, E-Mail-Flut oder Meeting-Protokoll – der Weg vom Gedanken zum fertigen Text ist oft mühsam. Wertvolle kognitive Energie geht beim Tippen und Formulieren verloren.
+**Die Lösung:** VoiceFlow ist eine native Desktop-Anwendung, die gesprochene Gedanken nicht nur transkribiert, sondern *versteht* und direkt in das benötigte Format (akademisch, geschäftlich, strukturiert) übersetzt.
 
-## What it is
-VoiceFlow is a lightweight desktop “voice-to-workflow” tool. Record a short instruction, optionally pull in clipboard context, generate a structured result, and (optionally) **magic-paste** it into the currently active app (Mail, Slack, Docs, etc.).
+![Screenshot der App](screenshots/main.png)
+*(Platzhalter für deinen Screenshot)*
 
-## Key Features
+## 🚀 Key Features
 
-- **Context Awareness (Clipboard)**
-  - “Context Reply” mode reads your clipboard and drafts replies/edits based on it.
+### 🎓 Wissenschaftlicher Modus ("Der Bachelor-Retter")
+Ein Modus speziell für akademisches Arbeiten.
+* **Das Konzept:** Trennung von kognitiver Leistung (Gedanke) und handwerklicher Formulierung (Schreiben).
+* **Funktion:** Du diktierst deine rohen Gedanken, Hypothesen oder Analyse-Ergebnisse. VoiceFlow transformiert diese in präzises, wissenschaftliches Hochdeutsch (Nominalstil, passiv), ohne den Inhalt zu verfälschen.
+* *Ideal um Schreibblockaden bei Abschlussarbeiten zu überwinden.*
 
-- **Smart Modes**
-  - **Standard**: clean notes + strict grammar polish  
-  - **Meeting Minutes**: summary, decisions, and action items  
-  - **To‑Do Extractor**: turns speech into a checkbox checklist  
+### 🧠 Kontext-Antworten ("Context Reply")
+Die App liest (auf Wunsch) deine Zwischenablage.
+* **Szenario:** Du kopierst eine komplexe E-Mail.
+* **Befehl:** "Sag freundlich ab, aber schlag nächste Woche vor."
+* **Ergebnis:** Eine perfekt formulierte Antwort, die auf den Kontext der E-Mail eingeht.
 
-- **Strict Grammar Enforcement (Hochdeutsch)**
-  - Global rule: correct grammar *in every mode*, including case usage (e.g. Genitive: “wegen **des** …”).
+### ⚡ Magic Paste & Workflow
+* **Direct Paste:** Das Fenster muss nicht offen bleiben. Der fertige Text wird "geisterhaft" direkt in dein aktives Word-Dokument, Outlook oder Slack getippt.
+* **Globaler Hotkey:** Mit `Shift + Space` ist VoiceFlow sofort da – und mit einem Klick wieder weg (System Tray).
 
-- **Magic Paste**
-  - “Direct Paste” hides the window and injects the result into the active application.
+### 🎨 Personalisierung
+* **Themes:** Wähle zwischen Hell, Dunkel oder dem modernen "Colorful"-Gradient-Look.
+* **Sprache:** UI komplett umschaltbar (Deutsch / Englisch).
+* **Grammatik-Engine:** Erzwingt standardmäßig perfektes Hochdeutsch (inkl. korrekter Genitiv-Nutzung), selbst wenn umgangssprachlich diktiert wird.
 
-- **Desktop UX**
-  - **System tray icon** (runs in the background)
-  - **Shift + Space** global hotkey toggles the window visibility
-  - Close button **hides** the app instead of quitting
+---
 
-## Winning Stack
+## 🛠 Tech Stack ("The Winning Stack")
 
-- **Tauri v2** (Rust) — native tray, global hotkey, clipboard + input injection commands
-- **Next.js 15** + **React 19** — UI and workflow logic
-- **Groq (OpenAI-compatible API)** — blazing-fast Llama 3 for formatting + workflow output, and Whisper for transcription
+VoiceFlow setzt auf maximale Performance bei minimalem Ressourcenverbrauch:
 
-## Demo Flows (Hackathon-friendly)
+* **Frontend:** Next.js 15 + React 19 (Modernes UI).
+* **Desktop Runtime:** Tauri v2 (Rust). Extrem performant und sicher.
+* **KI-Backend:** Groq API.
+    * *Inferenz:* Llama 3 (70b) für logische Strukturierung und Nuancen.
+    * *Transkription:* Whisper (Large v3) für exakte Spracherkennung.
+* **System:** Rust-Hooks für Clipboard-Management und Input-Simulation (`enigo`, `arboard`).
 
-### Context Reply (Clipboard → Reply)
-1. Copy an email/chat message.
-2. Select **Mode: Context Reply**.
-3. Record: “Antworte freundlich und schlage nächste Schritte vor.”
-4. Enable **Direct Paste** to paste the response straight into your chat/email editor.
+---
 
-### Meeting Minutes (Voice → Protocol)
-1. Select **Mode: Meeting Minutes**.
-2. Record a short meeting recap.
-3. Get structured minutes: Summary, Decisions, Action Items.
+## 📦 Installation & Setup
 
-### To‑Do Extractor (Voice → Checklist)
-1. Select **Mode: To‑Do Extractor**.
-2. Record: “Heute: Kunden anrufen, Angebot schicken, Rechnung prüfen …”
-3. Receive a clean markdown checklist (ready to paste).
+### Voraussetzungen
+* Node.js & npm
+* Rust (via `rustup`)
+* Ein API-Key von [Groq](https://console.groq.com)
 
-## Installation (Windows / macOS / Linux)
+### Quick Start
 
-### Prerequisites
-- **Node.js** (recommended: latest LTS)
-- **Rust toolchain** (via `rustup`)
-- Tauri prerequisites for your OS (WebView2 on Windows, etc.)
+1.  **Repository klonen:**
+    ```bash
+    git clone [https://github.com/AdrianZeoGer/AdrianZeoGer-VoiceFlow---AI-Productivity-Assistant.git](https://github.com/AdrianZeoGer/AdrianZeoGer-VoiceFlow---AI-Productivity-Assistant.git)
+    cd voiceflow
+    npm install
+    ```
 
-### Setup
-1. Install JS dependencies:
+2.  **API Konfigurieren:**
+    Erstelle eine `.env.local` Datei:
+    ```bash
+    NEXT_PUBLIC_OPENAI_API_KEY=gsk_DEIN_GROQ_KEY
+    NEXT_PUBLIC_OPENAI_BASE_URL=[https://api.groq.com/openai/v1](https://api.groq.com/openai/v1)
+    NEXT_PUBLIC_LLM_MODEL=llama-3.3-70b-versatile
+    ```
 
-```bash
-npm install
-```
+3.  **Starten (Dev Mode):**
+    ```bash
+    npm run tauri dev
+    ```
 
-2. Create `.env.local` (Groq):
-   - Copy `.env.local.example` → `.env.local`
-   - Replace `YOUR_GROQ_API_KEY` with your real key
+4.  **Bauen (Release):**
+    ```bash
+    npm run tauri build
+    ```
+    *(Die fertige .exe findest du unter `src-tauri/target/release`)*
 
-**Example**
+---
 
-```bash
-NEXT_PUBLIC_OPENAI_API_KEY=YOUR_GROQ_API_KEY
-NEXT_PUBLIC_OPENAI_BASE_URL=https://api.groq.com/openai/v1
-NEXT_PUBLIC_LLM_MODEL=llama-3.3-70b-versatile
-NEXT_PUBLIC_WHISPER_MODEL=whisper-large-v3-turbo
-NEXT_PUBLIC_WHISPER_LANGUAGE=de
-```
+## 👤 Über das Projekt
 
-3. Run the desktop app:
+**VoiceFlow** wurde entwickelt, um die Lücke zwischen schnellem Sprechen und professionellem Schreiben zu schließen. Der Fokus liegt darauf, den Nutzer im "Flow" zu halten, statt ihn durch Formatierungsarbeit auszubremsen.
 
-```bash
-npm run tauri dev
-```
+**Entwickler:** Adrian Arvid Zedler
+**Standort:** Leipzig, Deutschland
 
-## Architecture (How it works)
-
-### Frontend (Next.js / React)
-- UI lives in `src/app/page.tsx`
-- The app records audio in the browser runtime (MediaRecorder), transcribes it, and runs the selected workflow mode.
-
-### AI Service (Groq via OpenAI-compatible SDK)
-- `src/services/ai.ts` calls:
-  - `/audio/transcriptions` for speech-to-text
-  - `/chat/completions` for workflow output
-- The system prompt is generated per mode **but always includes the global Hochdeutsch grammar rule**.
-
-### Backend (Tauri / Rust)
-- `src-tauri/src/lib.rs` provides OS-level integration:
-  - **Tray icon** + quit menu
-  - **Shift + Space** global shortcut toggles window visibility
-  - Close button hides the window (keeps app running)
-  - Tauri commands:
-    - `get_clipboard_content` → read text clipboard (Context Reply)
-    - `inject_text` → hide window and paste into active app (Magic Paste)
-
-### Frontend ↔ Backend Bridge
-- The React UI calls Rust commands through Tauri IPC:
-  - `invoke("get_clipboard_content")`
-  - `invoke("inject_text", { text })`
-
-## Notes / Limitations
-- **Direct Paste** relies on OS input simulation and may require accessibility/input permissions on some systems.
-- Clipboard-based flows only work with **text** clipboard content.
-
-## Project Name Ideas
-If you want alternatives to “VoiceFlow”:
-- **PastePilot**
-- **Speak2Ship**
-- **ClipReply**
-
-# Voice Prod — Voice-driven desktop productivity
-
-Record audio, transcribe with Whisper, and enrich with AI (summaries, to-dos).  
-Built with **Tauri v2**, **Next.js** (App Router), **Tailwind**, **shadcn/ui**, and **OpenAI SDK** (configurable for Groq).
-
-## Quick start
-
-1. **Install deps**
-   ```bash
-   cd voice-prod-tool && npm install
-   ```
-
-2. **Configure API**
-   - Copy `.env.local.example` to `.env.local`
-   - Set `NEXT_PUBLIC_OPENAI_API_KEY` (or `NEXT_PUBLIC_OPENAI_BASE_URL` + `NEXT_PUBLIC_GROQ_API_KEY` for Groq)
-
-3. **Run**
-   ```bash
-   npm run tauri dev
-   ```
-
-- **Global hotkey:** `Alt+Space` — toggles recording or brings the window to focus.  
-- **Microphone:** Uses the browser `getUserMedia`; grant mic access when prompted.
-
-## Structure
-
-- `src/app/` — Next.js App Router (page, layout, globals)
-- `src/components/ui/` — shadcn-style: Card, Button, Tabs, Textarea
-- `src/hooks/useAudioRecorder.ts` — MediaRecorder-based recording
-- `src/services/ai.ts` — Whisper transcription + LLM enrichment (OpenAI/Groq)
-- `src-tauri/` — Tauri v2 (Rust): global shortcut `Alt+Space`, emits `hotkey-triggered`, focus window
-
-## Groq
-
-In `.env.local`:
-
-```env
-NEXT_PUBLIC_OPENAI_BASE_URL=https://api.groq.com/openai/v1
-NEXT_PUBLIC_GROQ_API_KEY=gsk_...
-NEXT_PUBLIC_LLM_MODEL=llama-3.1-70b-versatile
-```
-
-Whisper-like transcription depends on Groq’s compatibility; otherwise keep `NEXT_PUBLIC_OPENAI_API_KEY` for Whisper and use Groq only for the LLM by adjusting `ai.ts` if needed.
-
-## Build
-
-```bash
-npm run build
-npm run tauri build
-```
-
-Icons: set `bundle.icon` in `src-tauri/tauri.conf.json` or run `npm run tauri icon path/to/icon.png` before building.
+*© 2026 Adrian Arvid Zedler. Alle Rechte vorbehalten.*

@@ -70,7 +70,7 @@ fn setup_tray(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Error + 
         tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     };
 
-    let quit = MenuItem::with_id(app, "quit", "Quit Voice Prod", true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, "quit", "Quit VoiceFlow", true, None::<&str>)?;
     let menu = Menu::with_items(app, &[&quit])?;
 
     let mut tray_builder = TrayIconBuilder::new()

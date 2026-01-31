@@ -105,7 +105,12 @@ export type EnrichOptions = {
   directPaste?: boolean;
 };
 
-export type ProcessingMode = "standard" | "context_reply" | "meeting_minutes" | "todo_extractor";
+export type ProcessingMode =
+  | "standard"
+  | "context_reply"
+  | "meeting_minutes"
+  | "todo_extractor"
+  | "scientific_work";
 
 /**
  * Transcribe audio using Whisper (or Groq-compatible endpoint when base URL is set).
@@ -195,6 +200,29 @@ export async function enrichTranscription(text: string, opts: EnrichOptions = {}
     case "todo_extractor":
       taskInstruction =
         "Task: extract actionable to-dos and output a markdown checklist. If none, output: \"No action items.\"";
+      break;
+    case "scientific_work":
+      taskInstruction = `You are an academic editor for a Bachelor's thesis. The user will dictate thoughts via stream-of-consciousness. They may stutter, repeat themselves, or speak colloquially.
+
+YOUR TASK: Extract the core arguments and factual content. Reformulate them into precise, high-level academic German ('Wissenschaftssprache') as if you are the author writing the thesis directly.
+
+PERSPECTIVE: Write directly as the author. Do NOT use phrases like 'The user says', 'The author states', 'The author intends to', or any meta-reference to the speaker. The output must read as the thesis text itself.
+
+CONTEXT AWARENESS: Match the type of content. If the input is an argument or claim, formulate it as the argument. If it is a methodology description, write it as the methodology section. If it is a result or finding, write it as the results section. Adapt structure and register accordingly.
+
+TONE: Maintain strict academic 'Nominalstil' (noun-heavy style) and passive voice where appropriate, but ensure the text flows naturally as part of a thesis chapter—not as a summary about the text.
+
+RULES:
+1. Use Nominalstil and passive voice where appropriate for academic texts.
+2. Strictly NO filler words.
+3. DO NOT invent new facts. Only structure and reformulate the user's thoughts.
+4. If the user says 'write this down' or similar, ignore the command and output only the content.
+5. Output format: A clean, coherent paragraph ready to be pasted into LaTeX or Word.
+
+EXAMPLE:
+- Input: "I asked 50 people."
+- Bad: "The author states that 50 people were asked."
+- Good: "An empirical survey of 50 subjects was conducted."`;
       break;
     default:
       taskInstruction = "Task: produce a clean, structured output.";

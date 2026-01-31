@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+import { useTheme } from "next-themes";
 import { useAudioRecorder } from "@/hooks/useAudioRecorder";
 import {
   enrichTranscription,
@@ -17,9 +18,12 @@ import {
   type ProcessingMode,
   type SupportedLanguageCode,
 } from "@/services/ai";
+import { useLanguage } from "@/components/language-provider";
 
 export default function Home() {
   const { state, audioBlob, error, startRecording, stopRecording, reset } = useAudioRecorder();
+  const { t, uiLanguage, setUiLanguage } = useLanguage();
+  const { theme, setTheme } = useTheme();
   const [transcription, setTranscription] = useState("");
   const [enriched, setEnriched] = useState("");
   const [processing, setProcessing] = useState(false);
@@ -181,24 +185,55 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6">
       <Card className="w-full max-w-2xl border-border bg-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Mic className="h-6 w-6 text-primary" />
-            Voice Prod
-          </CardTitle>
-          <CardDescription>
-            Record with the button or{" "}
-            <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 text-xs">Shift+Space</kbd>. Transcribed and
-            enriched with AI.
-          </CardDescription>
+        <CardHeader className="pb-4">
+          <div className="flex items-center justify-between gap-6">
+            <div className="flex min-w-0 flex-1 items-center gap-4">
+              <img
+                src="/LogoVoiceFlow.ico"
+                alt="VoiceFlow"
+                className="h-24 w-24 shrink-0 object-contain drop-shadow-md"
+              />
+              <div className="min-w-0 flex-1">
+                <CardTitle className="text-2xl font-semibold">{t("appTitle")}</CardTitle>
+                <CardDescription className="mt-1">
+                  {t("recordHint")}{" "}
+                  <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 text-xs">Shift+Space</kbd>.{" "}
+                  {t("appSubtitle")}
+                </CardDescription>
+              </div>
+            </div>
+
+            <div className="flex shrink-0 items-center gap-2">
+              <select
+                value={uiLanguage}
+                onChange={(e) => setUiLanguage(e.target.value as "de" | "en")}
+                className="h-9 rounded-md border border-border bg-background px-2 text-sm"
+                aria-label={t("uiLanguageToggle")}
+              >
+                <option value="de">DE</option>
+                <option value="en">EN</option>
+              </select>
+
+              <select
+                value={theme || "dark"}
+                onChange={(e) => setTheme(e.target.value)}
+                className="h-9 rounded-md border border-border bg-background px-2 text-sm"
+                aria-label={t("theme")}
+              >
+                <option value="dark">{t("themeDark")}</option>
+                <option value="light">{t("themeLight")}</option>
+                <option value="colorful">{t("themeColorful")}</option>
+              </select>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3 rounded-md border border-border p-4">
-            <div className="text-sm font-medium">Workflow Settings</div>
+            <div className="text-sm font-medium">{t("workflowSettings")}</div>
 
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="flex flex-col gap-2">
-                <label className="text-xs text-muted-foreground">Mode</label>
+                <label className="text-xs text-muted-foreground">{t("mode")}</label>
                 <select
                   value={processingMode}
                   onChange={(e) => {
@@ -206,24 +241,23 @@ export default function Home() {
                     setProcessingMode(next);
                     if (next === "meeting_minutes") {
                       // Requirement: warning/alert dialog for this mode.
-                      window.alert(
-                        "Note: This works best for clear conversations with 1-3 speakers. It may struggle with overlapping voices or heated debates."
-                      );
+                      window.alert(t("meetingMinutesWarning"));
                     }
                   }}
                   className="h-10 w-full rounded-md border border-border bg-background px-3 text-sm"
                   aria-label="Processing Mode"
                   disabled={processing || state === "recording"}
                 >
-                  <option value="standard">Standard (Fix grammar)</option>
-                  <option value="context_reply">Context Reply (uses clipboard)</option>
-                  <option value="meeting_minutes">Meeting Minutes</option>
-                  <option value="todo_extractor">To-Do Extractor</option>
+                  <option value="standard">{t("modeStandard")}</option>
+                  <option value="context_reply">{t("modeContextReply")}</option>
+                  <option value="meeting_minutes">{t("modeMeetingMinutes")}</option>
+                  <option value="todo_extractor">{t("modeTodoExtractor")}</option>
+                  <option value="scientific_work">{t("modeScientificWork")}</option>
                 </select>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-xs text-muted-foreground">Language</label>
+                <label className="text-xs text-muted-foreground">{t("language")}</label>
                 <select
                   value={languageCode}
                   onChange={(e) => setLanguageCode(e.target.value as SupportedLanguageCode)}
@@ -247,13 +281,13 @@ export default function Home() {
                 onChange={(e) => setDirectPaste(e.target.checked)}
                 disabled={processing || state === "recording"}
               />
-              <span className="font-medium">Direct Paste</span>
-              <span className="text-xs text-muted-foreground">(auto-paste result into your active app)</span>
+              <span className="font-medium">{t("directPaste")}</span>
+              <span className="text-xs text-muted-foreground">{t("directPasteHint")}</span>
             </label>
 
             <p className="text-xs text-muted-foreground">
-              Output will be optimized for <span className="font-medium">{selectedLanguageLabel}</span>.
-              {processingMode === "context_reply" && " Context Reply will read your clipboard text."}
+              {t("outputOptimizedFor")} <span className="font-medium">{selectedLanguageLabel}</span>.
+              {processingMode === "context_reply" && ` ${t("contextReplyClipboardHint")}`}
             </p>
           </div>
 
@@ -271,7 +305,7 @@ export default function Home() {
                   className="gap-2"
                 >
                   <Mic className="h-5 w-5" />
-                  Start recording
+                  {t("startRecording")}
                 </Button>
               )}
 
@@ -281,7 +315,7 @@ export default function Home() {
                     className="h-4 w-4 rounded-full bg-destructive animate-pulse-recording"
                     aria-label="Recording"
                   />
-                  <p className="text-sm text-muted-foreground">Recording…</p>
+                  <p className="text-sm text-muted-foreground">{t("recording")}</p>
                   <Button
                     variant="destructive"
                     size="lg"
@@ -289,7 +323,7 @@ export default function Home() {
                     className="gap-2"
                   >
                     <Square className="h-4 w-4" />
-                    Stop
+                    {t("stop")}
                   </Button>
                 </div>
               )}
@@ -297,7 +331,7 @@ export default function Home() {
               {processing && (
                 <div className="flex flex-col items-center gap-2">
                   <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                  <p className="text-sm text-muted-foreground">Transcribing & enriching…</p>
+                  <p className="text-sm text-muted-foreground">{t("transcribing")}</p>
                 </div>
               )}
             </div>
@@ -308,8 +342,8 @@ export default function Home() {
             <div className="space-y-4">
               <Tabs defaultValue="transcription" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="transcription">Transcription</TabsTrigger>
-                  <TabsTrigger value="enriched">AI output</TabsTrigger>
+                  <TabsTrigger value="transcription">{t("transcriptionTab")}</TabsTrigger>
+                  <TabsTrigger value="enriched">{t("aiOutputTab")}</TabsTrigger>
                 </TabsList>
                 <TabsContent value="transcription">
                   <Textarea
@@ -329,12 +363,20 @@ export default function Home() {
               <div className="flex justify-end">
                 <Button variant="outline" onClick={handleReset} className="gap-2">
                   <MicOff className="h-4 w-4" />
-                  New recording
+                  {t("newRecording")}
                 </Button>
               </div>
             </div>
           )}
         </CardContent>
+        <footer className="border-t border-border px-6 py-4 text-center">
+          <p className="text-xs text-muted-foreground">
+            VoiceFlow © 2026 Created by Adrian Arvid Zedler
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Max-Liebermann-Straße 138, 04157 Leipzig, Germany
+          </p>
+        </footer>
       </Card>
     </main>
   );
