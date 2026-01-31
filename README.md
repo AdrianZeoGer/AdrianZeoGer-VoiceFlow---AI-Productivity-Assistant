@@ -27,7 +27,7 @@ Die App liest (auf Wunsch) deine Zwischenablage.
 ### 🎨 Personalisierung
 * **Themes:** Wähle zwischen Hell, Dunkel oder dem modernen "Colorful"-Gradient-Look.
 * **Sprache:** UI komplett umschaltbar (Deutsch / Englisch).
-* **Grammatik-Engine:** Erzwingt standardmäßig perfektes Hochdeutsch (inkl. korrekter Genitiv-Nutzung), selbst wenn umgangssprachlich diktiert wird.
+* **Grammatik-Engine:** Erzwingt standardmäßig Hochdeutsch, selbst wenn umgangssprachlich diktiert wird.
 
 ---
 
