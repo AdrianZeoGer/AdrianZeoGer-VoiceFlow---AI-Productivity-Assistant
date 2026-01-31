@@ -4,7 +4,7 @@
 **Die Lösung:** VoiceFlow ist eine native Desktop-Anwendung, die gesprochene Gedanken nicht nur transkribiert, sondern *versteht* und direkt in das benötigte Format (akademisch, geschäftlich, strukturiert) übersetzt.
 
 ![Screenshot der App](screenshots/main.png)
-*(Platzhalter für deinen Screenshot)*
+#
 
 ## 🚀 Key Features
 
