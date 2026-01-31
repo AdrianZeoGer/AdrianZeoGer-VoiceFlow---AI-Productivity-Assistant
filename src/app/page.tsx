@@ -19,6 +19,7 @@ import {
   type SupportedLanguageCode,
 } from "@/services/ai";
 import { useLanguage } from "@/components/language-provider";
+import { enable, disable, isEnabled } from "@tauri-apps/plugin-autostart";
 
 export default function Home() {
   const { state, audioBlob, error, startRecording, stopRecording, reset } = useAudioRecorder();
@@ -30,6 +31,8 @@ export default function Home() {
   const [languageCode, setLanguageCode] = useState<SupportedLanguageCode>("de");
   const [processingMode, setProcessingMode] = useState<ProcessingMode>("standard");
   const [directPaste, setDirectPaste] = useState(false);
+  const [startWithWindows, setStartWithWindows] = useState(false);
+  const [autostartLoaded, setAutostartLoaded] = useState(false);
 
   const languages: LanguageSelection[] = useMemo(
     () => [
@@ -78,6 +81,13 @@ export default function Home() {
       const savedPaste = localStorage.getItem("voice-prod-direct-paste");
       if (savedPaste) setDirectPaste(savedPaste === "true");
     } catch {}
+  }, []);
+
+  useEffect(() => {
+    isEnabled()
+      .then(setStartWithWindows)
+      .catch(() => {})
+      .finally(() => setAutostartLoaded(true));
   }, []);
 
   useEffect(() => {
@@ -283,6 +293,25 @@ export default function Home() {
               />
               <span className="font-medium">{t("directPaste")}</span>
               <span className="text-xs text-muted-foreground">{t("directPasteHint")}</span>
+            </label>
+
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={startWithWindows}
+                onChange={async (e) => {
+                  const next = e.target.checked;
+                  try {
+                    if (next) await enable();
+                    else await disable();
+                    setStartWithWindows(next);
+                  } catch {
+                    setStartWithWindows(!next);
+                  }
+                }}
+                disabled={!autostartLoaded || processing || state === "recording"}
+              />
+              <span className="font-medium">{t("startWithWindows")}</span>
             </label>
 
             <p className="text-xs text-muted-foreground">

@@ -149,6 +149,12 @@ pub fn run() {
             });
             #[cfg(desktop)]
             {
+                app.handle().plugin(
+                    tauri_plugin_autostart::init(
+                        tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+                        None,
+                    ),
+                );
                 setup_tray(&app.handle()).map_err(|e| e.to_string())?;
                 setup_global_shortcut(&app.handle()).map_err(|e| e.to_string())?;
             }

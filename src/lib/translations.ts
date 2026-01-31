@@ -35,6 +35,7 @@ export const STRINGS = {
     themeLight: "Light",
     themeColorful: "Colorful",
     uiLanguageToggle: "UI-Sprache",
+    startWithWindows: "Mit Windows starten",
   },
   en: {
     appTitle: "VoiceFlow",
@@ -70,6 +71,7 @@ export const STRINGS = {
     themeLight: "Light",
     themeColorful: "Colorful",
     uiLanguageToggle: "UI Language",
+    startWithWindows: "Start with Windows",
   },
 } as const;
 
